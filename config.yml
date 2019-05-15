@@ -1,1 +1,50 @@
 
+# Metadata for your course
+
+title: OL Test Course
+tagline: Just a test
+description: Description of the Test
+
+# Repository setup
+# The following section template information for the repository
+# This will be used when the repository is crated for each individual learner
+
+template:
+  name: my-ol-test-repo
+  repo: lab-starter-template
+
+
+# `before` block
+# Actions to take place after the learner registers, but before they start interacting with their repo
+
+before:
+- type: updateBranchProtection
+  enforce_admins: false
+- type: createIssue
+  title: Getting Started with GitHub
+  body: introduction.md
+#  body: introduction.md
+#- type: createFile # the type of action, full list at https://lab.github.com/docs/actions/
+#  filename: SomeFile.md 
+  # some actions require additional options, those should appear below `type:`
+  # you can execute multiple actions in the `before` block
+
+# Steps for the course
+# A list of steps that take the learner through the course
+# Create one step for each action that a learner will complete
+steps:
+  - title: Do Step 1
+    description: This is the description of the first step
+    event: issues.closed
+    link: '{{ repoUrl }}/issues/1'
+    actions:
+    - type: updateBranchProtection
+    - type: createPullRequest
+      title: Trigger the app
+      head: add-to-list
+      body: 02_trigger-wip.md
+      action_id: first_pr
+    - type: respond
+      with: 01_successful-close.md
+      data:
+        url: '%actions.first_pr.data.html_url%'
